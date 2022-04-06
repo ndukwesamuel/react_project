@@ -1,35 +1,42 @@
 import React from 'react'
-import logo from './logo.svg'
 import { FaTimes } from 'react-icons/fa'
-import { social, links } from './data'
-
+import { useGlobalContext } from './context'
+import sublinks from './data'
 const Sidebar = () => {
+  const { isSidebarOpen, closeSidebar } = useGlobalContext()
   return (
-    <aside className={`sidebar show-sidebar`}>
-
-      <div className="sidebar-header">
-        <img src={logo} className={logo} alt="conding adict" />
-        <button className="close-btn">
+    <div
+      className={`${
+        isSidebarOpen ? 'sidebar-wrapper show' : 'sidebar-wrapper'
+      }`}
+    >
+      <aside className='sidebar'>
+        <button className='close-btn' onClick={closeSidebar}>
           <FaTimes />
         </button>
-      </div>
-      <ul className="links">
-        {links.map( (data, index_data) => {
-          const {id , icon , text, url } = data
-
-
-              return(
-                <li key={id}>
-                  <a href={url}>
-                    {icon}
-                    {text}
-                  </a>
-
-                </li>
-              )
-        })}
-      </ul>
-    </aside>
+        <div className='sidebar-links'>
+          {sublinks.map((item, index) => {
+            const { links, page } = item
+            return (
+              <article key={index}>
+                <h4>{page}</h4>
+                <div className='sidebar-sublinks'>
+                  {links.map((link, index) => {
+                    const { url, icon, label } = link
+                    return (
+                      <a key={index} href={url}>
+                        {icon}
+                        {label}
+                      </a>
+                    )
+                  })}
+                </div>
+              </article>
+            )
+          })}
+        </div>
+      </aside>
+    </div>
   )
 }
 
